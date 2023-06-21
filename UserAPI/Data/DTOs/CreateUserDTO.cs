@@ -7,7 +7,7 @@ namespace UserAPI.Data.DTOs
         [Required]
         public string UserName { get; set; }
         [Required]
-        public DateTime DataNascimento { get; set; }
+        public DateTime BirthDate { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UserAPI.Data.DTOs;
+using UserAPI.Services;
 
 namespace UserAPI.Controllers
 {
@@ -7,10 +8,19 @@ namespace UserAPI.Controllers
     [Route("[Controller]")]
     public class UserController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult RegisterUser(CreateUserDTO createUserDTO)
+        private RegisterService _registerService;
+
+        public UserController(RegisterService registerService)
         {
-            throw new NotImplementedException();
+            _registerService = registerService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser(CreateUserDTO createUserDTO)
+        {
+            await _registerService.Register(createUserDTO);
+
+            return Ok("User created successfully");
         }
     }
 }
