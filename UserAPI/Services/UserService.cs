@@ -32,16 +32,16 @@ namespace UserAPI.Services
 
         public async Task<string> Login(LoginUserDTO loginUserDTO)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginUserDTO.UserName, loginUserDTO.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(loginUserDTO.UserName, loginUserDTO.Password, false, false);  // verifica os dados de login
 
             if(!result.Succeeded)
             {
                 throw new ApplicationException("Unauthenticated user");
             }
 
-            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == loginUserDTO.UserName.ToUpper());
+            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == loginUserDTO.UserName.ToUpper());  // busca o usuário
 
-            var token = _tokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(user);  // gera o token
 
             return token;
         }
