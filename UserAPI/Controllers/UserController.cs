@@ -8,19 +8,26 @@ namespace UserAPI.Controllers
     [Route("[Controller]")]
     public class UserController : ControllerBase
     {
-        private RegisterService _registerService;
+        private UserService _userService;
 
-        public UserController(RegisterService registerService)
+        public UserController(UserService userService)
         {
-            _registerService = registerService;
+            _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(CreateUserDTO createUserDTO)
         {
-            await _registerService.Register(createUserDTO);
+            await _userService.Register(createUserDTO);
 
             return Ok("User created successfully");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserDTO loginUserDTO)
+        {
+           var token = await _userService.Login(loginUserDTO);
+           return Ok($"Authenticated user: {token}");
         }
     }
 }

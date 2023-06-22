@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserAPI.Data;
@@ -22,7 +23,10 @@ builder.Services
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<RegisterService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Path.GetTempPath()));
 
 builder.Services.AddControllers();
 
