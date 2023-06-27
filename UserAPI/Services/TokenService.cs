@@ -8,6 +8,13 @@ namespace UserAPI.Services
 {
     public class TokenService
     {
+        private IConfiguration _configuration;
+
+        public TokenService(IConfiguration configuration) 
+        {
+            _configuration = configuration;
+        }
+
         public string GenerateToken(User usuario)
         {
             Claim[] claims = new Claim[]
@@ -18,16 +25,16 @@ namespace UserAPI.Services
                 new Claim("loginTimestamp", DateTime.UtcNow.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9ASHDA98H9ah9ha9H9A89n0f"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
 
             var signingCredentials =
                 new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
 
             var token = new JwtSecurityToken
                 (
-                expires: DateTime.Now.AddMinutes(10),
-                claims: claims,
-                signingCredentials: signingCredentials
+                    expires: DateTime.Now.AddMinutes(10),
+                    claims: claims,
+                    signingCredentials: signingCredentials
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
